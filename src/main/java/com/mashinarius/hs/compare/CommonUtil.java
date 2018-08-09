@@ -1,8 +1,5 @@
 package com.mashinarius.hs.compare;
 
-import com.mashinarius.hs.compare.hero.AbstractHero;
-import com.mashinarius.hs.compare.hero.Hero1;
-
 public class CommonUtil
 {
 	public static boolean getRandomBoolean() {
@@ -11,6 +8,6 @@ public class CommonUtil
 
 /*	public static AbstractHero getRandomHero() {
 
-		return new Hero1();
+		return new SimpleHero();
 	}*/
 }

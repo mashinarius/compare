@@ -19,9 +19,22 @@ public abstract class AbstractDeck
 		this.cards = cards;
 	}
 
+	private String dackName;
+
+	public String getDackName()
+	{
+		return dackName;
+	}
+
+	public void setDackName(String dackName)
+	{
+		this.dackName = dackName;
+	}
 
 	public AbstractDeck(String s)
 	{
+		this.dackName = s + " " + this.getClass().getSimpleName();
+
 		List<AbstractCard> cards;
 		switch (s)
 		{

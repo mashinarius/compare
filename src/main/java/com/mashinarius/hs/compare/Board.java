@@ -95,6 +95,7 @@ public boolean isCurrentGamerBoardSizeFull() {
 	public void setGamer1(Gamer gamer1)
 	{
 		this.gamer1 = gamer1;
+		this.gamer1.setBoard(this);
 	}
 
 	public Gamer getGamer2()
@@ -105,6 +106,7 @@ public boolean isCurrentGamerBoardSizeFull() {
 	public void setGamer2(Gamer gamer2)
 	{
 		this.gamer2 = gamer2;
+		this.gamer2.setBoard(this);
 	}
 
 	public void fight()
@@ -127,17 +129,17 @@ public boolean isCurrentGamerBoardSizeFull() {
 				AbstractCard defender = gamer1Board.getFirst();
 				if (defender.getHealth() > attacker.getStrenght())
 				{
-					log.info(attacker.getClass().getSimpleName() + " attacks defender " + defender.getClass().getSimpleName() );
+					//log.info(attacker.getClass().getSimpleName() + " attacks defender " + defender.getClass().getSimpleName() );
 					defender.setHealth(defender.getHealth() - attacker.getStrenght());
 				} else
 				{
-					log.info(attacker.getClass().getSimpleName() + " kill defender " + defender.getClass().getSimpleName());
+					//log.info(attacker.getClass().getSimpleName() + " kill defender " + defender.getClass().getSimpleName());
 					gamer1Board.remove(defender);
 				}
 			} else
 			{
 				// face
-				log.info(attacker.getClass().getSimpleName() + " attacks face ");
+				//log.info(attacker.getClass().getSimpleName() + " attacks face ");
 				gamer1.getHero().removeHealth(attacker.getStrenght());
 			}
 		}

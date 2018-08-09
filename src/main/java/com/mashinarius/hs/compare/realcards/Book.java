@@ -3,9 +3,7 @@ package com.mashinarius.hs.compare.realcards;
 import com.mashinarius.hs.compare.cards.AbstractCard;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class Book
 {

@@ -3,8 +3,6 @@ package com.mashinarius.hs.compare;
 import com.mashinarius.hs.compare.cards.AbstractCard;
 import com.mashinarius.hs.compare.cards.AbstractDeck;
 import com.mashinarius.hs.compare.hero.AbstractHero;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -14,21 +12,25 @@ import java.util.Random;
 public class Gamer
 {
 	private Board board;
-	private final Logger log = LoggerFactory.getLogger(Gamer.class);
+
+	public void setBoard(Board board)
+	{
+		this.board = board;
+	}
+
 	private Integer HAND_SIZE = 10;
 	private LinkedList<AbstractCard> hand = new LinkedList<>();
-	private List<AbstractCard> deck;// = new LinkedList<>();
+	//private List<AbstractCard> cardsInDeck;// = new LinkedList<>();
+	private AbstractDeck deck;
 
 	private AbstractHero hero;
 	private Integer currentMana = 0;
 
-	public Gamer(Board board, AbstractHero hero, List<AbstractCard> deck)
+	public Gamer(AbstractHero hero, AbstractDeck deck)
 	{
-		this.board = board;
 		this.hero = hero;
 		this.deck = deck;
 	}
-
 
 	public void addCardToTheHand(AbstractCard card)
 	{
@@ -45,9 +47,9 @@ public class Gamer
 
 	public void addCardFromTheDeck()
 	{
-		if (deck.size() > 0)
+		if (deck.getCards().size() > 0)
 		{
-			AbstractCard card = deck.removeFirst();
+			AbstractCard card = deck.getCards().remove(0);
 			addCardToTheHand(card);
 		}
 	}
@@ -64,21 +66,21 @@ public class Gamer
 
 	public void play()
 	{
-		log.info("--------------------------");
+		/*log.info("--------------------------");
 		log.info("Hero name " + hero.getName());
 		log.info("Hand  " + handToString(hand));
 		log.info("Mana " + currentMana);
 		log.info("Health " + getHero().getHealth());
-		log.info("Deck " + deck.size());
+		log.info("Deck " + deck.getCards().size());
 		log.info("Board " + board.isCurrentGamerBoardSizeFull());
-
+*/
 
 		Integer manaLeft = currentMana;
 		if (manaLeft > 2)
 		{
 			if (CommonUtil.getRandomBoolean())
 			{
-				log.info("Ability played");
+				//log.info("Ability played");
 				getHero().getAbility().playAbility(board);
 				manaLeft = manaLeft - 2;
 			}
@@ -104,7 +106,7 @@ public class Gamer
 			AbstractCard card = availableCardsInHand.remove(x);
 			manaLeft = manaLeft - card.getCost();
 			board.addCardToTheBoard(card);
-			log.info("Playing card " + card.getClass().getSimpleName());
+			//log.info("Playing card " + card.getClass().getSimpleName());
 			hand.remove(card);
 			availableCardsInHand.clear();
 			for (AbstractCard card2 : hand)
@@ -115,6 +117,11 @@ public class Gamer
 			}
 		}
 
+	}
+
+	public AbstractDeck getDeck()
+	{
+		return deck;
 	}
 
 	public AbstractHero getHero()
