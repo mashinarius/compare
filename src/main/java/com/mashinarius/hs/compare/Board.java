@@ -1,10 +1,13 @@
 package com.mashinarius.hs.compare;
 
 import com.mashinarius.hs.compare.cards.AbstractCard;
+import com.mashinarius.hs.compare.realcards.CoinCard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.Optional;
 
 public class Board
 {
@@ -12,14 +15,17 @@ public class Board
 	private boolean isGamer1Turn = true;
 	//private boolean isGamer2Turn = false;
 
-public boolean isCurrentGamerBoardSizeFull() {
-	if (isGamer1Turn) {
-		return gamer1Board.size()==7;
-	} else {
-		return gamer2Board.size()==7;
-	}
+	public boolean isCurrentGamerBoardSizeFull()
+	{
+		if (isGamer1Turn)
+		{
+			return gamer1Board.size() == 7;
+		} else
+		{
+			return gamer2Board.size() == 7;
+		}
 
-}
+	}
 
 	private LinkedList<AbstractCard> gamer1Board = new LinkedList<>();
 	private LinkedList<AbstractCard> gamer2Board = new LinkedList<>();
@@ -73,6 +79,19 @@ public boolean isCurrentGamerBoardSizeFull() {
 		}
 	}
 
+	public Gamer getDefender()
+	{
+		if (isGamer1Turn)
+		{
+			return gamer2;
+		} else
+		{
+			return gamer1;
+		}
+	}
+
+
+
 	public Gamer getCoinOwner()
 	{
 		if (isGamer1Turn)
@@ -120,28 +139,60 @@ public boolean isCurrentGamerBoardSizeFull() {
 		}
 	}
 
-	private void figthExt(LinkedList<AbstractCard> gamer2Board, LinkedList<AbstractCard> gamer1Board, Gamer gamer1)
+	private void figthExt(LinkedList<AbstractCard> attackerBoard, LinkedList<AbstractCard> defenderBoard, Gamer defenderGamer)
 	{
-		for (AbstractCard attacker : gamer2Board)
+		for (AbstractCard attackerCard : attackerBoard)
 		{
-			if (CommonUtil.getRandomBoolean() && gamer1Board.size() > 0)
+			if (!attackerCard.isKilled())
 			{
-				AbstractCard defender = gamer1Board.getFirst();
-				if (defender.getHealth() > attacker.getStrenght())
+				if (CommonUtil.getRandomBoolean() && defenderBoard.size() > 0)
 				{
-					//log.info(attacker.getClass().getSimpleName() + " attacks defender " + defender.getClass().getSimpleName() );
-					defender.setHealth(defender.getHealth() - attacker.getStrenght());
+					Optional<AbstractCard> cardThatCouldBeKilledAndAttackerAllived = defenderBoard.stream()
+							.filter(c -> c.getHealth() <= attackerCard.getStrenght() && c.getStrenght() < attackerCard.getHealth())
+							.sorted(Comparator.comparing(AbstractCard::getCost).reversed()).findFirst();
+
+					if (cardThatCouldBeKilledAndAttackerAllived.isPresent())
+					{
+						attackerCard.setHealth(attackerCard.getHealth() - cardThatCouldBeKilledAndAttackerAllived.get().getStrenght());
+						defenderBoard.remove(cardThatCouldBeKilledAndAttackerAllived.get());
+						continue;
+					}
+
+					Optional<AbstractCard> cardThatCouldBeKilledAndAttackerKilled = defenderBoard.stream().filter(c -> c.getHealth() <= attackerCard.getStrenght()).sorted(Comparator.comparing(AbstractCard::getCost).reversed())
+							.findFirst();
+
+					if (cardThatCouldBeKilledAndAttackerKilled.isPresent())
+					{
+						attackerCard.setHealth(attackerCard.getHealth() - cardThatCouldBeKilledAndAttackerKilled.get().getStrenght());
+						defenderBoard.remove(cardThatCouldBeKilledAndAttackerKilled.get());
+						continue;
+					}
+
+					AbstractCard defenderCard = defenderBoard.getFirst();
+					if (defenderCard.getHealth() > attackerCard.getStrenght())
+					{
+						//log.info(attackerCard.getClass().getSimpleName() + " attacks defenderCard " + defenderCard.getClass().getSimpleName() );
+						defenderCard.setHealth(defenderCard.getHealth() - attackerCard.getStrenght());
+						attackerCard.setHealth(attackerCard.getHealth() - defenderCard.getStrenght());
+					} else
+					{
+						//log.info(attackerCard.getClass().getSimpleName() + " kill defenderCard " + defenderCard.getClass().getSimpleName());
+						attackerCard.setHealth(attackerCard.getHealth() - defenderCard.getStrenght());
+						defenderBoard.remove(defenderCard);
+					}
+					if (attackerCard.getHealth() < 1) {
+						attackerCard.setKilled(true);
+					}
 				} else
 				{
-					//log.info(attacker.getClass().getSimpleName() + " kill defender " + defender.getClass().getSimpleName());
-					gamer1Board.remove(defender);
+					// face
+					//log.info(attackerCard.getClass().getSimpleName() + " attacks face ");
+					defenderGamer.getHero().removeHealth(attackerCard.getStrenght());
 				}
-			} else
-			{
-				// face
-				//log.info(attacker.getClass().getSimpleName() + " attacks face ");
-				gamer1.getHero().removeHealth(attacker.getStrenght());
 			}
 		}
+
+		attackerBoard.removeIf(c->c.isKilled());
+
 	}
 }

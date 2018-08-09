@@ -39,6 +39,7 @@ public abstract class AbstractHero
 		return health;
 	}
 
+
 	public boolean removeHealth(Integer amount) {
 		health= health - amount;
 		return health > 0;

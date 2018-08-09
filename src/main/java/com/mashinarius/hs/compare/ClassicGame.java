@@ -7,14 +7,9 @@ import org.slf4j.LoggerFactory;
 public class ClassicGame extends AbstractGame
 {
 
-	private final Integer MAX_CARD = 30;
+	//private final Integer MAX_CARD = 30;
 
-	public ClassicGame()
-	{
-		super();
-	}
-
-	private final Logger log = LoggerFactory.getLogger(ClassicGame.class);
+	//private final Logger log = LoggerFactory.getLogger(ClassicGame.class);
 
 	public ClassicGame(Gamer gamer1, Gamer gamer2)
 	{

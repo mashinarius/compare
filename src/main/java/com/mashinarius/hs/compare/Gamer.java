@@ -3,6 +3,7 @@ package com.mashinarius.hs.compare;
 import com.mashinarius.hs.compare.cards.AbstractCard;
 import com.mashinarius.hs.compare.cards.AbstractDeck;
 import com.mashinarius.hs.compare.hero.AbstractHero;
+import com.mashinarius.hs.compare.realcards.CoinCard;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -54,7 +55,8 @@ public class Gamer
 		}
 	}
 
-	private String handToString(List<AbstractCard> cards) {
+	private String handToString(List<AbstractCard> cards)
+	{
 		String result = new String();
 		for (AbstractCard card : cards)
 		{
@@ -75,6 +77,18 @@ public class Gamer
 		log.info("Board " + board.isCurrentGamerBoardSizeFull());
 */
 
+		boolean isWeHaveACoin = hand.stream().filter(s -> s instanceof CoinCard).count() > 0;
+		if (isWeHaveACoin && CommonUtil.getRandomBoolean())
+		{
+			boolean isNoCardCurrentMana = hand.stream().filter(c -> c.getCost() <= currentMana).count() < 1;
+			boolean isAnyCardPlusOne = hand.stream().filter(c -> c.getCost().equals(currentMana + 1)).count() > 0;
+			if (isAnyCardPlusOne && isNoCardCurrentMana)
+			{
+				currentMana = currentMana + 1;
+				hand.removeFirstOccurrence(CoinCard.class);
+			}
+		}
+
 		Integer manaLeft = currentMana;
 		if (manaLeft > 2)
 		{
@@ -93,7 +107,8 @@ public class Gamer
 		List<AbstractCard> availableCardsInHand = new ArrayList<>();
 		for (AbstractCard card : hand)
 		{
-			if (card.getCost() <= manaLeft) {
+			if (card.getCost() <= manaLeft)
+			{
 				availableCardsInHand.add(card);
 			}
 		}
@@ -111,7 +126,8 @@ public class Gamer
 			availableCardsInHand.clear();
 			for (AbstractCard card2 : hand)
 			{
-				if (card2.getCost() <= manaLeft) {
+				if (card2.getCost() <= manaLeft)
+				{
 					availableCardsInHand.add(card2);
 				}
 			}

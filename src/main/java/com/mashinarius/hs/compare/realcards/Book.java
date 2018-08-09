@@ -3,6 +3,7 @@ package com.mashinarius.hs.compare.realcards;
 import com.mashinarius.hs.compare.cards.AbstractCard;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Book
@@ -59,7 +60,7 @@ public class Book
 
 		cards.add(new Card555());
 		cards.add(new Card555());
-
+		Collections.shuffle(cards);
 		return cards;
 	}
 
@@ -82,7 +83,7 @@ public class Book
 		cards.add(new Card777());
 
 		cards.add(new Card888());
-
+		Collections.shuffle(cards);
 		return cards;
 	}
 
@@ -103,6 +104,7 @@ public class Book
 
 		cards.add(new Card101010());
 		cards.add(new Card101010());
+		Collections.shuffle(cards);
 		return cards;
 	}
 }

@@ -2,6 +2,7 @@ package com.mashinarius.hs.compare.cards;
 
 import com.mashinarius.hs.compare.realcards.Book;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -68,6 +69,8 @@ public abstract class AbstractDeck
 				getCards().add(card);
 			}
 		}
+
+		Collections.shuffle(cards);
 
 	}
 

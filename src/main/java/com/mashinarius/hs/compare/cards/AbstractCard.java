@@ -9,6 +9,7 @@ public abstract class AbstractCard
 	private Integer strenght;
 	private Integer cost;
 	private boolean tount;
+	private boolean killed = false;
 
 	public AbstractCard(Integer health, Integer strenght, Integer cost)
 	{
@@ -24,6 +25,16 @@ public abstract class AbstractCard
 		this.strenght = strenght;
 		this.cost = cost;
 		this.tount = tount;
+	}
+
+	public boolean isKilled()
+	{
+		return killed;
+	}
+
+	public void setKilled(boolean killed)
+	{
+		this.killed = killed;
 	}
 
 	public Integer getCost()
@@ -70,4 +81,5 @@ public abstract class AbstractCard
 	public abstract void deathRattle(Gamer owner, Gamer opposite, Board board);
 
 	public abstract void battleCry(Gamer owner, Gamer opposite, Board board);
+
 }
