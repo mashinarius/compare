@@ -1,5 +1,6 @@
 package com.mashinarius.hs.compare;
 
+import com.mashinarius.hs.compare.cards.AbstractDeck;
 import com.mashinarius.hs.compare.cards.DeckWarlock;
 import com.mashinarius.hs.compare.cards.DeckWarrior;
 import com.mashinarius.hs.compare.hero.AbilityWarrior;
@@ -9,6 +10,8 @@ import com.mashinarius.hs.compare.hero.Hero1;
 import com.mashinarius.hs.compare.realcards.CoinCard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 public class ClassicGame extends AbstractGame
 {
@@ -57,19 +60,28 @@ public class ClassicGame extends AbstractGame
 		board.getCoinOwner().addMana(1);
 
 	}
-
+/*
 	@Override
-	protected void createGamers()
+	protected void createGamers(AbstractHero hero1, AbstractHero hero2, List<AbstractDeck> deck1, List<AbstractDeck> deck2)
+	{
+		Gamer gamer1 = new Gamer(board, hero1, deck1);
+		board.setGamer1(gamer1);
+		Gamer gamer2 = new Gamer(board, hero2, deck2);
+		board.setGamer2(gamer2);
+	}*/
+
+/*	@Override
+	protected void createGamers(AbstractDeck deck1, AbstractDeck deck2)
 	{
 		log.info("creating gamers..");
 		AbstractHero hero1 = new Hero1(new AbilityWarrior(), "Warrior");
 		AbstractHero hero2 = new Hero1(new AbilityWarlock(), "Warlock");
 
-		Gamer gamer1 = new Gamer(board, hero1, new DeckWarrior());
+		Gamer gamer1 = new Gamer(board, hero1, new DeckWarrior(deck1));
 		board.setGamer1(gamer1);
 		Gamer gamer2 = new Gamer(board, hero2, new DeckWarlock());
 		board.setGamer2(gamer2);
-	}
+	}*/
 
 	@Override
 	protected void createBoard()
@@ -98,4 +110,12 @@ public class ClassicGame extends AbstractGame
 		board.getCoinOwner().addCardFromTheDeck();
 		board.getCoinOwner().addCardFromTheDeck();
 	}
+
+	@Override
+	protected void createGamers(Gamer gamer1, Gamer gamer2)
+	{
+		board.setGamer1(gamer1);
+		board.setGamer2(gamer2);
+	}
+
 }

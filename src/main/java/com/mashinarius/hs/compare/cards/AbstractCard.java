@@ -1,11 +1,30 @@
 package com.mashinarius.hs.compare.cards;
 
-public class AbstractCard
+import com.mashinarius.hs.compare.Board;
+import com.mashinarius.hs.compare.Gamer;
+
+public abstract class AbstractCard
 {
 	private Integer health;
 	private Integer strenght;
 	private Integer cost;
 	private boolean tount;
+
+	public AbstractCard(Integer health, Integer strenght, Integer cost)
+	{
+		this.health = health;
+		this.strenght = strenght;
+		this.cost = cost;
+		this.tount = false;
+	}
+
+	public AbstractCard(Integer health, Integer strenght, Integer cost, boolean tount)
+	{
+		this.health = health;
+		this.strenght = strenght;
+		this.cost = cost;
+		this.tount = tount;
+	}
 
 	public Integer getCost()
 	{
@@ -46,4 +65,9 @@ public class AbstractCard
 	{
 		this.strenght = strenght;
 	}
+
+
+	public abstract void deathRattle(Gamer owner, Gamer opposite, Board board);
+
+	public abstract void battleCry(Gamer owner, Gamer opposite, Board board);
 }

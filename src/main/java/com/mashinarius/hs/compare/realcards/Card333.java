@@ -1,13 +1,11 @@
 package com.mashinarius.hs.compare.realcards;
 
-import com.mashinarius.hs.compare.cards.Card1;
-import com.mashinarius.hs.compare.cards.Card3;
+import com.mashinarius.hs.compare.cards.SimpleCard;
 
-public class Card333 extends Card3
+public class Card333 extends SimpleCard
 {
-	public Card333() {
-		setHealth(3);
-		setStrenght(3);
+	public Card333()
+	{
+		super(3, 3, 3);
 	}
-
 }

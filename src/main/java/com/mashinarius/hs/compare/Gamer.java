@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public class Gamer
 {
@@ -18,17 +17,18 @@ public class Gamer
 	private final Logger log = LoggerFactory.getLogger(Gamer.class);
 	private Integer HAND_SIZE = 10;
 	private LinkedList<AbstractCard> hand = new LinkedList<>();
-	private LinkedList<AbstractCard> deck = new LinkedList<>();
+	private List<AbstractCard> deck;// = new LinkedList<>();
 
 	private AbstractHero hero;
 	private Integer currentMana = 0;
 
-	public Gamer(Board board, AbstractHero hero, AbstractDeck deck)
+	public Gamer(Board board, AbstractHero hero, List<AbstractCard> deck)
 	{
 		this.board = board;
 		this.hero = hero;
-		this.deck.addAll(deck.getCards());
+		this.deck = deck;
 	}
+
 
 	public void addCardToTheHand(AbstractCard card)
 	{
@@ -84,7 +84,7 @@ public class Gamer
 			}
 		}
 
-		board.figth();
+		board.fight();
 
 		Random rand = new Random();
 

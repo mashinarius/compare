@@ -2,10 +2,10 @@ package com.mashinarius.hs.compare.realcards;
 
 import com.mashinarius.hs.compare.cards.SimpleCard;
 
-public class Card222 extends SimpleCard
+public class Card888 extends SimpleCard
 {
-	public Card222()
+	public Card888()
 	{
-		super(2, 2, 2);
+		super(8, 8, 8);
 	}
 }

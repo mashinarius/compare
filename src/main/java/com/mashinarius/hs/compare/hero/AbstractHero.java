@@ -2,6 +2,12 @@ package com.mashinarius.hs.compare.hero;
 
 public abstract class AbstractHero
 {
+	public AbstractHero(String name, AbstractAbility ability)
+	{
+		this.name = name;
+		this.ability = ability;
+	}
+
 	private final Integer MAX_HEALTH = 30;
 
 	private String name;
@@ -43,4 +49,6 @@ public abstract class AbstractHero
 			health = MAX_HEALTH;
 		}
 	}
+
+
 }

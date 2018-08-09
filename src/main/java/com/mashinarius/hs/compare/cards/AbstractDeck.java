@@ -1,8 +1,11 @@
 package com.mashinarius.hs.compare.cards;
 
-import java.util.LinkedList;
+import com.mashinarius.hs.compare.realcards.Book;
 
-public class AbstractDeck
+import java.util.LinkedList;
+import java.util.List;
+
+public abstract class AbstractDeck
 {
 	private LinkedList<AbstractCard> cards = new LinkedList<>();
 
@@ -15,4 +18,44 @@ public class AbstractDeck
 	{
 		this.cards = cards;
 	}
+
+
+	public AbstractDeck(String s)
+	{
+		List<AbstractCard> cards;
+		switch (s)
+		{
+		case "light":
+		{
+			cards = new Book().getSmallCards();
+			break;
+		}
+		case "medium":
+		{
+			cards = new Book().getMediumCards();
+			break;
+		}
+		case "hard":
+		{
+			cards = new Book().getHardCards();
+			break;
+		}
+		default:
+		{
+			cards = new Book().getAllCards();
+			break;
+		}
+		}
+
+		while (getCards().size() < 30)
+		{
+
+			for (AbstractCard card : cards)
+			{
+				getCards().add(card);
+			}
+		}
+
+	}
+
 }

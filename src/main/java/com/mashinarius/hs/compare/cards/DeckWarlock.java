@@ -11,18 +11,26 @@ public class DeckWarlock extends AbstractDeck
 {
 	private final Logger log = LoggerFactory.getLogger(DeckWarlock.class);
 
+	public DeckWarlock(String s)
+	{
+		super(s);
+	}
 
-
-	public DeckWarlock () {
+	/*
+	public DeckWarlock()
+	{
 
 		List<AbstractCard> allCards = new Book().getAllCards();
 		Random ran = new Random();
 
-		while (getCards().size() <30) {
+		while (getCards().size() < 30)
+		{
 			int x = ran.nextInt(allCards.size());
 			getCards().add(allCards.get(x));
 		}
 
-		getCards().forEach(c->log.info(c.getClass().getSimpleName()));
-	}
+		getCards().forEach(c -> log.info(c.getClass().getSimpleName()));
+	}*/
+
+
 }

@@ -10,7 +10,7 @@ public class Board
 {
 	private final Logger log = LoggerFactory.getLogger(Board.class);
 	private boolean isGamer1Turn = true;
-	private boolean isGamer2Turn = false;
+	//private boolean isGamer2Turn = false;
 
 public boolean isCurrentGamerBoardSizeFull() {
 	if (isGamer1Turn) {
@@ -41,11 +41,11 @@ public boolean isCurrentGamerBoardSizeFull() {
 		if (isGamer1Turn)
 		{
 			isGamer1Turn = false;
-			isGamer2Turn = true;
+			//isGamer2Turn = true;
 		} else
 		{
 			isGamer1Turn = true;
-			isGamer2Turn = false;
+			//isGamer2Turn = false;
 		}
 	}
 
@@ -54,11 +54,11 @@ public boolean isCurrentGamerBoardSizeFull() {
 		if (isFirstGamer)
 		{
 			isGamer1Turn = true;
-			isGamer2Turn = false;
+			//isGamer2Turn = false;
 		} else
 		{
 			isGamer1Turn = false;
-			isGamer2Turn = true;
+			//isGamer2Turn = true;
 		}
 	}
 
@@ -107,7 +107,7 @@ public boolean isCurrentGamerBoardSizeFull() {
 		this.gamer2 = gamer2;
 	}
 
-	public void figth()
+	public void fight()
 	{
 		if (isGamer1Turn)
 		{
