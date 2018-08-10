@@ -3,7 +3,7 @@ package com.mashinarius.hs.compare.cards;
 import com.mashinarius.hs.compare.Board;
 import com.mashinarius.hs.compare.Gamer;
 
-public abstract class AbstractCard
+public abstract class  AbstractCard
 {
 	private Integer health;
 	private Integer strenght;

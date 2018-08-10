@@ -1,6 +1,6 @@
 package com.mashinarius.hs.compare.hero;
 
-public abstract class AbstractHero
+public abstract class AbstractHero implements Cloneable
 {
 	public AbstractHero(String name, AbstractAbility ability)
 	{

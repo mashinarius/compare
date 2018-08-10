@@ -60,6 +60,37 @@ public class Book
 
 		cards.add(new Card555());
 		cards.add(new Card555());
+
+		cards.add(new Card111());
+		cards.add(new Card111());
+
+		cards.add(new Card222());
+		cards.add(new Card222());
+
+		cards.add(new Card333());
+		cards.add(new Card333());
+
+		cards.add(new Card444());
+		cards.add(new Card444());
+
+		cards.add(new Card555());
+		cards.add(new Card555());
+
+		cards.add(new Card666());
+		cards.add(new Card666());
+
+		cards.add(new Card777());
+		cards.add(new Card777());
+
+		cards.add(new Card888());
+		cards.add(new Card888());
+
+		cards.add(new Card111());
+		cards.add(new Card111());
+
+		cards.add(new Card222());
+		cards.add(new Card222());
+
 		Collections.shuffle(cards);
 		return cards;
 	}
@@ -67,6 +98,36 @@ public class Book
 
 	public List<AbstractCard> getMediumCards() {
 		List<AbstractCard> cards = new ArrayList<>();
+
+		cards.add(new Card111());
+		cards.add(new Card111());
+
+		cards.add(new Card222());
+		cards.add(new Card222());
+
+		cards.add(new Card333());
+		cards.add(new Card333());
+
+		cards.add(new Card444());
+		cards.add(new Card444());
+
+		cards.add(new Card555());
+		cards.add(new Card555());
+
+		cards.add(new Card666());
+		cards.add(new Card666());
+
+		cards.add(new Card777());
+		cards.add(new Card777());
+
+		cards.add(new Card888());
+		cards.add(new Card888());
+
+		cards.add(new Card999());
+		cards.add(new Card999());
+
+		cards.add(new Card101010());
+		cards.add(new Card101010());
 
 		cards.add(new Card333());
 
@@ -83,6 +144,7 @@ public class Book
 		cards.add(new Card777());
 
 		cards.add(new Card888());
+
 		Collections.shuffle(cards);
 		return cards;
 	}
@@ -90,6 +152,21 @@ public class Book
 	public List<AbstractCard> getHardCards() {
 		List<AbstractCard> cards = new ArrayList<>();
 
+		cards.add(new Card111());
+		cards.add(new Card111());
+
+		cards.add(new Card222());
+		cards.add(new Card222());
+
+		cards.add(new Card333());
+		cards.add(new Card333());
+
+		cards.add(new Card444());
+		cards.add(new Card444());
+
+		cards.add(new Card555());
+		cards.add(new Card555());
+
 		cards.add(new Card666());
 		cards.add(new Card666());
 
@@ -104,6 +181,22 @@ public class Book
 
 		cards.add(new Card101010());
 		cards.add(new Card101010());
+
+		cards.add(new Card666());
+		cards.add(new Card666());
+
+		cards.add(new Card777());
+		cards.add(new Card777());
+
+		cards.add(new Card888());
+		cards.add(new Card888());
+
+		cards.add(new Card999());
+		cards.add(new Card999());
+
+		cards.add(new Card101010());
+		cards.add(new Card101010());
+
 		Collections.shuffle(cards);
 		return cards;
 	}

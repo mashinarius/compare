@@ -2,8 +2,11 @@ package com.mashinarius.hs.compare;
 
 import com.mashinarius.hs.compare.cards.AbstractCard;
 import com.mashinarius.hs.compare.cards.AbstractDeck;
+import com.mashinarius.hs.compare.cards.SimpleCard;
 import com.mashinarius.hs.compare.hero.AbstractHero;
 import com.mashinarius.hs.compare.realcards.CoinCard;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -12,7 +15,21 @@ import java.util.Random;
 
 public class Gamer
 {
+
+	private final Logger log = LoggerFactory.getLogger(Gamer.class);
 	private Board board;
+
+	private Integer fatig = 0;
+
+	public Integer getFatig()
+	{
+		return fatig;
+	}
+
+	public void setFatig(Integer fatig)
+	{
+		this.fatig = fatig;
+	}
 
 	public void setBoard(Board board)
 	{
@@ -24,8 +41,23 @@ public class Gamer
 	//private List<AbstractCard> cardsInDeck;// = new LinkedList<>();
 	private AbstractDeck deck;
 
+	public LinkedList<AbstractCard> getHand()
+	{
+		return hand;
+	}
+
+	public void setHand(LinkedList<AbstractCard> hand)
+	{
+		this.hand = hand;
+	}
+
 	private AbstractHero hero;
 	private Integer currentMana = 0;
+
+	public Integer getCurrentMana()
+	{
+		return currentMana;
+	}
 
 	public Gamer(AbstractHero hero, AbstractDeck deck)
 	{
@@ -35,9 +67,12 @@ public class Gamer
 
 	public void addCardToTheHand(AbstractCard card)
 	{
+		SimpleCard card1 = new SimpleCard(card.getHealth(), card.getStrenght(), card.getCost());
 		if (hand.size() < HAND_SIZE)
 		{
-			hand.add(card);
+			hand.add(card1);
+		} else {
+			log.info(card1.getCost() + " was fired. Hand is full." );
 		}
 	}
 
@@ -102,6 +137,8 @@ public class Gamer
 
 		board.fight();
 
+		board.getAttackerBoard().removeIf(c->c.getHealth()<1);
+
 		Random rand = new Random();
 
 		List<AbstractCard> availableCardsInHand = new ArrayList<>();
@@ -148,5 +185,10 @@ public class Gamer
 	public void setHero(AbstractHero hero)
 	{
 		this.hero = hero;
+	}
+
+	public void setCurrentMana(int i)
+	{
+		currentMana = i;
 	}
 }

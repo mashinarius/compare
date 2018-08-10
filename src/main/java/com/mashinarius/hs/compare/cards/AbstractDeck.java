@@ -61,14 +61,14 @@ public abstract class AbstractDeck
 		}
 		}
 
-		while (getCards().size() < 30)
+/*		while (getCards().size() < 30)
 		{
 
 			for (AbstractCard card : cards)
 			{
 				getCards().add(card);
 			}
-		}
+		}*/
 
 		Collections.shuffle(cards);
 

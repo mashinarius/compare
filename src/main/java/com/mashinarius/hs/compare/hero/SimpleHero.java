@@ -6,4 +6,5 @@ public class SimpleHero extends AbstractHero
 	{
 		super(name, ability);
 	}
+
 }

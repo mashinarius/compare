@@ -1,6 +1,7 @@
 package com.mashinarius.hs.compare;
 
 import com.mashinarius.hs.compare.cards.AbstractCard;
+import com.mashinarius.hs.compare.cards.SimpleCard;
 import com.mashinarius.hs.compare.realcards.CoinCard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,10 +20,10 @@ public class Board
 	{
 		if (isGamer1Turn)
 		{
-			return gamer1Board.size() == 7;
+			return gamer1Board.size() > 6;
 		} else
 		{
-			return gamer2Board.size() == 7;
+			return gamer2Board.size() > 6;
 		}
 
 	}
@@ -30,11 +31,23 @@ public class Board
 	private LinkedList<AbstractCard> gamer1Board = new LinkedList<>();
 	private LinkedList<AbstractCard> gamer2Board = new LinkedList<>();
 
-	public void addCardToTheBoard(AbstractCard card)
-	{
+	public LinkedList<AbstractCard> getAttackerBoard () {
+
 		if (isGamer1Turn)
 		{
-			gamer1Board.add(card);
+			return gamer1Board;
+		} else
+		{
+			return gamer2Board;
+		}
+	}
+
+	public void addCardToTheBoard(AbstractCard card)
+	{
+		AbstractCard card1 = new SimpleCard(card.getHealth(), card.getStrenght(), card.getCost());
+		if (isGamer1Turn)
+		{
+			gamer1Board.add(card1);
 		} else
 		{
 			gamer2Board.add(card);
@@ -145,7 +158,7 @@ public class Board
 		{
 			if (!attackerCard.isKilled())
 			{
-				if (CommonUtil.getRandomBoolean() && defenderBoard.size() > 0)
+				if (CommonUtil.getRandomBooleanForFace() && defenderBoard.size() > 0)
 				{
 					Optional<AbstractCard> cardThatCouldBeKilledAndAttackerAllived = defenderBoard.stream()
 							.filter(c -> c.getHealth() <= attackerCard.getStrenght() && c.getStrenght() < attackerCard.getHealth())
