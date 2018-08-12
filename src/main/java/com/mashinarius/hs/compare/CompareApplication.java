@@ -4,18 +4,16 @@ import com.mashinarius.hs.compare.cards.AbstractDeck;
 import com.mashinarius.hs.compare.cards.DeckHunter;
 import com.mashinarius.hs.compare.cards.DeckWarlock;
 import com.mashinarius.hs.compare.cards.DeckWarrior;
-import com.mashinarius.hs.compare.hero.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.util.SerializationUtils;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.*;
 
 @SpringBootApplication
 public class CompareApplication
@@ -27,45 +25,50 @@ public class CompareApplication
 		SpringApplication.run(CompareApplication.class, args);
 	}
 
+	final Integer THREAD_COUNT = 8;
+
 	@PostConstruct
 	public void init()
 	{
-		Long GAME_AMOUNT = new Long(100);
-		// create heroes and decks
+		Long GAME_AMOUNT = new Long(1000);
 
 		List<AbstractDeck> winners = new ArrayList();
 		long t1 = System.nanoTime();
+		ExecutorService executor = Executors.newFixedThreadPool(THREAD_COUNT);
+
+		Future<List<AbstractDeck>> future = null;// = executor.submit(new MyTask());
+
 		for (int i = 0; i < GAME_AMOUNT; i++)
 		{
-			List<AbstractDeck> warriorDecks = new ArrayList<>();
-			List<AbstractDeck> warlockDecks = new ArrayList<>();
-			List<AbstractDeck> hunterDecks = new ArrayList<>();
 
-			warriorDecks.add(new DeckWarrior("light"));
-			warriorDecks.add(new DeckWarrior("medium"));
-			warriorDecks.add(new DeckWarrior("hard"));
-
-			warlockDecks.add(new DeckWarlock("light"));
-			warlockDecks.add(new DeckWarlock("medium"));
-			warlockDecks.add(new DeckWarlock("hard"));
-
-			hunterDecks.add(new DeckHunter("light"));
-			hunterDecks.add(new DeckHunter("medium"));
-			hunterDecks.add(new DeckHunter("hard"));
-
-
-			AbstractHero garosh = new SimpleHero("Garosh", new AbilityWarrior());
-			AbstractHero nancy = new SimpleHero("Nancy", new AbilityWarlock());
-			AbstractHero rexar = new SimpleHero("Rexar", new AbilityHunter());
-
-			testMethod(winners, warlockDecks, warriorDecks, nancy, garosh);
-
-			testMethod(winners, hunterDecks, warriorDecks, rexar, garosh);
-
-			testMethod(winners, warlockDecks, hunterDecks, nancy, rexar);
-
-
+			future = executor.submit(new MyTask());
 		}
+
+		try
+		{
+			log.debug("Collector Future Task Started..");
+			winners.addAll(future.get(1, TimeUnit.HOURS));
+			log.debug("Collector Future Task Finished!");
+		} catch (TimeoutException e)
+		{
+			future.cancel(true);
+			log.error("TimeoutException");
+			log.error(e.getMessage());
+		} catch (InterruptedException e)
+		{
+			log.error("InterruptedException");
+			log.error(e.getLocalizedMessage());
+		} catch (ExecutionException e)
+		{
+			log.error("ExecutionException");
+			log.error(e.getLocalizedMessage());
+		}
+
+			/*compareHeroes(winners, Hero.HUNTER, Hero.WARLOCK);
+			compareHeroes(winners, Hero.WARRIOR, Hero.WARLOCK);
+			compareHeroes(winners, Hero.WARRIOR, Hero.HUNTER); */
+
+		executor.shutdownNow();
 		long t2 = System.nanoTime();
 
 		HashMap<String, Integer> mapOfHeroes = new HashMap();
@@ -84,69 +87,73 @@ public class CompareApplication
 		{
 			log.warn("Hero : " + s + " Amount : " + mapOfHeroes.get(s));
 		}
-/*		winners.forEach(w -> {
-			w.getCards()
-			if (mapOfHeroes.get(w.getClass().getSimpleName()) == null)
-			{
-				mapOfHeroes.put(w.getClass().getSimpleName(), 0);
-			}
-			mapOfHeroes.put(w.getClass().getSimpleName(), mapOfHeroes.get(w.getClass().getSimpleName()) + 1);
-		});*/
-
-/*		winners.forEach(w -> {
-			log.warn(w.getClass().getSimpleName());
-			*//*String cards = "";
-			for (AbstractCard card : w.getCards())
-			{
-				cards = cards + card.getCost() + " ";
-			}
-
-			log.warn(cards);*//*
-		});*/
-
 		log.warn((t2 - t1) + " Nano");
 	}
 
-	private void testMethod(List<AbstractDeck> winners, List<AbstractDeck> deck1, List<AbstractDeck> deck2, AbstractHero hero1, AbstractHero hero2)
+	class MyTask implements Callable<List<AbstractDeck>>
 	{
-		SimpleHero heroCopy1;
-		AbstractHero heroCopy2;
-		AbstractDeck deckCopy1;
-		AbstractDeck deckCopy2;
 
-		for (int index1 = 0; index1 < deck1.size(); index1++)
+		@Override
+		public ArrayList<AbstractDeck> call()
 		{
-			for (int index2 = 0; index2 < deck2.size(); index2++)
-			{
-				heroCopy1 =  new SimpleHero(hero1.getName(), hero1.getAbility());
-				BeanUtils.copyProperties(hero1, heroCopy1);
+			ArrayList<AbstractDeck> winnerDecks = new ArrayList<>();
 
-				heroCopy2 =  new SimpleHero(hero2.getName(), hero2.getAbility());
-				BeanUtils.copyProperties(hero2, heroCopy2);
+			compareHeroes(winnerDecks, Hero.HUNTER, Hero.WARLOCK);
+			compareHeroes(winnerDecks, Hero.WARRIOR, Hero.WARLOCK);
+			compareHeroes(winnerDecks, Hero.WARRIOR, Hero.HUNTER);
 
-				List backUpCards1 = new ArrayList();
-				List backUpCards2 = new ArrayList();
-
-				backUpCards1.addAll(deck1.get(index1).getCards());
-				backUpCards2.addAll(deck2.get(index2).getCards());
-
-				deckCopy1 = deck1.get(index1);
-				deckCopy2 = deck2.get(index2);
-
-				Gamer copyGamer1 = new Gamer(heroCopy1, deckCopy1);
-				Gamer copyGamer2 = new Gamer(heroCopy2, deckCopy2);
-
-				Gamer winner = new ClassicGame(copyGamer1, copyGamer2).startGame();
-
-				deck1.get(index1).getCards().clear();
-				deck1.get(index1).getCards().addAll(backUpCards1);
-
-				deck2.get(index2).getCards().clear();
-				deck2.get(index2).getCards().addAll(backUpCards2);
-
-				if (winner != null)
-					winners.add(winner.getDeck());
-			}
+			return winnerDecks;
 		}
 	}
+
+	private void compareHeroes(List<AbstractDeck> winners, Hero heroType1, Hero heroType2)
+	{
+
+		Gamer winner;
+		String[] types = new String[] { "light", "medium", "hard" };
+
+		for (String deckType1 : types)
+		{
+			for (String deckType2 : types)
+			{
+				AbstractDeck deck1 = null;
+				AbstractDeck deck2 = null;
+
+				deck1 = getAbstractDeck(heroType1, deckType1);
+				deck2 = getAbstractDeck(heroType2, deckType2);
+
+				winner = new ClassicGame(heroType1, heroType2, Strategy.CONTROL, Strategy.CONTROL, deck1, deck2).startGame();
+				if (winner != null)
+					winners.add(winner.getDeck());
+
+			}
+
+		}
+	}
+
+	private AbstractDeck getAbstractDeck(Hero heroType, String deckType)
+	{
+		AbstractDeck deck = null;
+		switch (heroType)
+		{
+		case WARRIOR:
+		{
+			deck = new DeckWarrior(deckType);
+			break;
+		}
+		case WARLOCK:
+		{
+			deck = new DeckWarlock(deckType);
+			break;
+
+		}
+		case HUNTER:
+		{
+			deck = new DeckHunter(deckType);
+			break;
+		}
+		}
+		return deck;
+	}
+
 }

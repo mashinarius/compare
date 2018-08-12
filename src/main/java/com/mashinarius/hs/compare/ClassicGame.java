@@ -1,10 +1,13 @@
 package com.mashinarius.hs.compare;
 
 import com.mashinarius.hs.compare.cards.AbstractCard;
+import com.mashinarius.hs.compare.cards.AbstractDeck;
+import com.mashinarius.hs.compare.hero.*;
 import com.mashinarius.hs.compare.realcards.CoinCard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClassicGame extends AbstractGame
@@ -14,9 +17,35 @@ public class ClassicGame extends AbstractGame
 
 	private final Logger log = LoggerFactory.getLogger(ClassicGame.class);
 
-	public ClassicGame(Gamer gamer1, Gamer gamer2)
+
+
+	private AbstractHero getRealHeroFromType(Hero hero) {
+
+		switch (hero) {
+		case WARRIOR: {
+			return new SimpleHero(Hero.WARRIOR.getText(), new AbilityWarrior());
+		}
+		case HUNTER: {
+			return new SimpleHero(Hero.HUNTER.getText(), new AbilityHunter());
+		}
+		case WARLOCK: {
+			return new SimpleHero(Hero.WARLOCK.getText(), new AbilityWarlock());
+		}
+		default: {
+			return null;
+		}
+		}
+	}
+
+	public ClassicGame(Hero hero1, Hero hero2, Strategy strategy1, Strategy strategy2, AbstractDeck deck1, AbstractDeck deck2)
 	{
 		board = new Board();
+
+
+
+		Gamer gamer1 = new Gamer(getRealHeroFromType(hero1), deck1);
+		Gamer gamer2 = new Gamer(getRealHeroFromType(hero2), deck2);
+
 		board.setGamer1(gamer1);
 		board.setGamer2(gamer2);
 	}
@@ -43,6 +72,7 @@ public class ClassicGame extends AbstractGame
 		for (int i = 0; i < 400; i++)
 		{
 			log.info("Turn " + board.getTurnOwner().getHero().getName());
+			log.info("Health " + board.getTurnOwner().getHero().getHealth());
 			board.getTurnOwner().addMana(1);
 			if (board.getTurnOwner().getCurrentMana()>10) {
 				board.getTurnOwner().setCurrentMana(10);

@@ -8,9 +8,9 @@ import java.util.List;
 
 public abstract class AbstractDeck
 {
-	private LinkedList<AbstractCard> cards = new LinkedList<>();
+	private List<AbstractCard> cards = new LinkedList<>();
 
-	public LinkedList<AbstractCard> getCards()
+	public List<AbstractCard> getCards()
 	{
 		return cards;
 	}
@@ -32,31 +32,32 @@ public abstract class AbstractDeck
 		this.dackName = dackName;
 	}
 
+
 	public AbstractDeck(String s)
 	{
 		this.dackName = s + " " + this.getClass().getSimpleName();
 
-		List<AbstractCard> cards;
+
 		switch (s)
 		{
 		case "light":
 		{
-			cards = new Book().getSmallCards();
+			this.cards = new Book().getSmallCards();
 			break;
 		}
 		case "medium":
 		{
-			cards = new Book().getMediumCards();
+			this.cards = new Book().getMediumCards();
 			break;
 		}
 		case "hard":
 		{
-			cards = new Book().getHardCards();
+			this.cards = new Book().getHardCards();
 			break;
 		}
 		default:
 		{
-			cards = new Book().getAllCards();
+			this.cards = new Book().getAllCards();
 			break;
 		}
 		}
