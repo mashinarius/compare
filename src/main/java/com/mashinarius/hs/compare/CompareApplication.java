@@ -25,7 +25,7 @@ public class CompareApplication
 		SpringApplication.run(CompareApplication.class, args);
 	}
 
-	final Integer THREAD_COUNT = 8;
+	final Integer THREAD_COUNT = 1;
 
 	@PostConstruct
 	public void init()
@@ -36,15 +36,35 @@ public class CompareApplication
 		long t1 = System.nanoTime();
 		ExecutorService executor = Executors.newFixedThreadPool(THREAD_COUNT);
 
-		Future<List<AbstractDeck>> future = null;// = executor.submit(new MyTask());
+		List<Future> listOfFuture = new ArrayList<>();
 
 		for (int i = 0; i < GAME_AMOUNT; i++)
 		{
 
-			future = executor.submit(new MyTask());
+			Future<List<AbstractDeck>> future = executor.submit(new MyTask());
+
+			listOfFuture.add(future);
 		}
 
-		try
+		for (Future<List<AbstractDeck>>  future : listOfFuture)
+		{
+
+			try
+			{
+				winners.addAll(future.get(1, TimeUnit.HOURS));
+			} catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			} catch (ExecutionException e)
+			{
+				e.printStackTrace();
+			} catch (TimeoutException e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		/*try
 		{
 			log.debug("Collector Future Task Started..");
 			winners.addAll(future.get(1, TimeUnit.HOURS));
@@ -62,7 +82,8 @@ public class CompareApplication
 		{
 			log.error("ExecutionException");
 			log.error(e.getLocalizedMessage());
-		}
+		}*/
+
 
 			/*compareHeroes(winners, Hero.HUNTER, Hero.WARLOCK);
 			compareHeroes(winners, Hero.WARRIOR, Hero.WARLOCK);
